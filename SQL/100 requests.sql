@@ -254,14 +254,14 @@ INNER JOIN traveler_profile AS tp ON u.id = tp.user_id;
 SELECT
     category,
     amount AS amount_usd,
-    ROUND(amount * 90, 2) AS amount_rub
+    ROUND((amount * 90)::numeric, 2) AS amount_rub
 FROM expense;
 
 -- 4.12. Числовые функции — максимальный и минимальный расходы
 SELECT
     MAX(amount) AS max_expense,
     MIN(amount) AS min_expense,
-    ROUND(AVG(amount), 2) AS avg_expense
+    ROUND(AVG(amount)::numeric, 2) AS avg_expense
 FROM expense;
 
 -- 4.13. Отбор отелей, где check_in после определённой даты
@@ -542,7 +542,7 @@ ORDER BY total_amount DESC;
 -- 8.3. Средние расходы по поездкам
 SELECT
     trip_id,
-    ROUND(AVG(amount), 2) AS avg_expense
+    ROUND(AVG(amount)::numeric, 2) AS avg_expense
 FROM expense
 GROUP BY trip_id
 ORDER BY avg_expense DESC;
@@ -877,7 +877,7 @@ SELECT
     e.amount AS accommodation_cost,
     DATE_PART('day', hb.check_out - hb.check_in) AS nights,
     ROUND(
-        e.amount / NULLIF(DATE_PART('day', hb.check_out - hb.check_in), 0), 2
+        (e.amount / NULLIF(DATE_PART('day', hb.check_out - hb.check_in), 0))::numeric, 2
     ) AS cost_per_night
 FROM expense e
 INNER JOIN hotel_booking hb ON e.trip_id = hb.trip_id
@@ -989,7 +989,7 @@ SELECT
     e.category,
     COUNT(*) AS records,
     SUM(e.amount) AS total,
-    ROUND(AVG(e.amount), 2) AS avg_amount,
+    ROUND(AVG(e.amount)::numeric, 2) AS avg_amount,
     MAX(e.amount) AS max_amount
 FROM expense e
 INNER JOIN trip t ON e.trip_id = t.id
