@@ -2,8 +2,8 @@
 
 ER-model:
 
-![Preview](images/ER model.png)
+![ER-model](images/ER-model.png)
 
 Relational database:
 
-![Preview](images/ER Relational database.png)
+![Relational-database](images/Relational-database.png)
